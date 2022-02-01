@@ -18,7 +18,8 @@ def create_business():
                             zipcode = request_body["zipcode"],
                             state = request_body["state"],
                             website = request_body["website"],
-                            category = request_body["category"])
+                            category = request_body["category"],
+                            like_count = 0)
     db.session.add(new_business)
     db.session.commit()
     return {"id":new_business.id}, 201
@@ -39,68 +40,27 @@ def get_a_busines(business_id):
     """
     business = valid_id(Business, business_id)
     return jsonify(business.to_dic()), 200
-    
-@businnes_bp.route("/uniquezipcode", methods=["GET"])
-def get_busineses_zipcode():
-    """
-    Getting all unique zipcodes where the businesses are located 
-    """
-    businesses = Business.query.all()
-    businesses_response= []
-    for business in businesses:
-        if business.to_dic_zipcode() not in businesses_response:
-            businesses_response.append(business.to_dic_zipcode())
-    # businesses_response = [business.to_dic_zipcode() for business in businesses]
-    return jsonify(businesses_response), 200
 
-@businnes_bp.route("/uniquecategory", methods=["GET"])
-def get_busineses_category():
-    """
-    Getting all unique categorys for the businesses.  
-    """
-    businesses = Business.query.all()
-    businesses_response= []
-    for business in businesses:
-        if business.to_dic_category() not in businesses_response:
-            businesses_response.append(business.to_dic_category())
-    # businesses_response = [business.to_dic_category() for business in businesses]
-    return jsonify(businesses_response), 200
-
-@businnes_bp.route("/zipcode", methods=["GET"])
-def get_business_for_selected_zipcode():
-    """
-    Getting all businesses locatted in a given zipcode
-    """
-    requested_zipcode = request.args.get('zipcode')
-    print(requested_zipcode)
-    if requested_zipcode:
-        businesses = Business.query.filter_by(zipcode = requested_zipcode)
-    business_response = [business.to_dic() for business in businesses]
-    return jsonify(business_response), 200
-
-@businnes_bp.route("/category", methods=["GET"])
-def get_business_for_selected_category():
-    """
-    Getting all businesses locatted for a given category
-    """
-    requested_category = request.args.get('category')
-    print(requested_category)
-    if requested_category:
-        businesses = Business.query.filter_by(category = requested_category)
-    business_response = [business.to_dic() for business in businesses]
-    return jsonify(business_response), 200
-
-@businnes_bp.route("/zipcode/category", methods=["GET"])
+@businnes_bp.route("/filters", methods=["GET"])
 def get_business_for_selected_category_zipcode():
     """
     Getting all businesses locatted in a given zipcode and for a given category
     """
     requested_category = request.args.get('category')
+    
     requested_zipcode = request.args.get('zipcode')
-    print(requested_category)
-    if requested_category and requested_zipcode:
+    
+    if (requested_category and requested_zipcode):
+        requested_category=requested_category.capitalize()
         businesses = Business.query.filter_by(category = requested_category).filter_by(zipcode=requested_zipcode)
+    elif (requested_category ): 
+        requested_category=requested_category.capitalize()
+        businesses = Business.query.filter_by(category = requested_category) 
+    elif (requested_zipcode ): 
+        businesses = Business.query.filter_by(zipcode = requested_zipcode) 
+    
     business_response = [business.to_dic() for business in businesses]
+    
     return jsonify(business_response), 200
 
 @businnes_bp.route("/<business_id>", methods=["DELETE"])
@@ -113,19 +73,40 @@ def delete_selected_business(business_id):
     db.session.commit()
     return {"id": business.id},200
 
-@businnes_bp.route("/<business_id>", methods=["PUT"])
+@businnes_bp.route("/<business_id>", methods=["PATCH"])
 def update_selected_business(business_id):
     """
     update a businesses  with a given id
     """
     business = valid_id(Business, business_id)
     request_body = request.get_json()
-    valid_input(request_body, Business)
-    business.name = request_body["name"]
-    business.street = request_body["street"]
-    business.city = request_body["city"]
-    business.state = request_body["state"]
-    business.website = request_body["website"]
-    business.category = request_body["category"]
+    if "name" in request_body:
+        business.name = request_body["name"]
+    if "street" in request_body:
+        business.street = request_body["street"]
+    if "city"  in request_body:  
+        business.city = request_body["city"]
+    if "state" in request_body:
+        business.state = request_body["state"]
+    if "zipcode" in request_body:
+        business.zipcode = request_body["zipcode"]
+    if "website" in request_body:
+        business.website = request_body["website"]
+    if "category" in request_body:
+        business.category = request_body["category"]
     db.session.commit()
     return jsonify(business.to_dic()),200
+
+@businnes_bp.route("/<business_id>/like_count", methods=["PATCH"])
+def update_selected_business_like_count(business_id):
+    """
+    update  businesses like_count  with a given id
+    """
+    business = valid_id(Business, business_id)
+    business.like_count += 1
+    db.session.commit()
+    return {"like":business.like_count},200
+    
+
+
+    

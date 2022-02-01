@@ -1,8 +1,8 @@
 """adds Business model
 
-Revision ID: 90fad84f7fd0
+Revision ID: f1e49fe73c8d
 Revises: 
-Create Date: 2022-01-21 19:55:10.293146
+Create Date: 2022-01-30 20:31:42.822762
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '90fad84f7fd0'
+revision = 'f1e49fe73c8d'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,8 +25,9 @@ def upgrade():
     sa.Column('city', sa.String(), nullable=False),
     sa.Column('state', sa.String(), nullable=False),
     sa.Column('zipcode', sa.String(), nullable=False),
-    sa.Column('website', sa.String(), nullable=False),
+    sa.Column('website', sa.String(), nullable=True),
     sa.Column('category', sa.String(), nullable=False),
+    sa.Column('like_count', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

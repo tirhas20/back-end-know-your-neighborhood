@@ -1,3 +1,4 @@
+from email.policy import default
 from app import db
 
 class Business(db.Model):
@@ -7,8 +8,11 @@ class Business(db.Model):
     city = db.Column(db.String ,nullable=False)
     state = db.Column(db.String ,nullable=False)
     zipcode = db.Column(db.String ,nullable=False)
-    website = db.Column(db.String, nullable=False)
+    website = db.Column(db.String, nullable=True)
     category = db.Column(db.String, nullable=False)
+    like_count = db.Column(db.Integer, default=0)
+    
+    
     
     def to_dic(self):
         return{
@@ -19,15 +23,7 @@ class Business(db.Model):
             "state": self.state,
             "zipcode": self.zipcode,
             "website": self.website,
-            "category": self.category
+            "category": self.category,
+            "like_count": self.like_count
         }
-    def to_dic_zipcode(self):
-        return{
-            # "id":self.id,
-            "zipcode":self.zipcode
-        }
-    def to_dic_category(self):
-        return{
-            # "id":self.id,
-            "category":self.category
-        }
+    

@@ -1,8 +1,8 @@
-"""adds Business model
+"""empty message
 
-Revision ID: f1e49fe73c8d
+Revision ID: c31fbe421447
 Revises: 
-Create Date: 2022-01-30 20:31:42.822762
+Create Date: 2022-02-01 14:43:57.972522
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'f1e49fe73c8d'
+revision = 'c31fbe421447'
 down_revision = None
 branch_labels = None
 depends_on = None

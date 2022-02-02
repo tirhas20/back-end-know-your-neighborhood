@@ -80,6 +80,7 @@ def update_selected_business(business_id):
     """
     business = valid_id(Business, business_id)
     request_body = request.get_json()
+    valid_input(request_body, Business)
     if "name" in request_body:
         business.name = request_body["name"]
     if "street" in request_body:
@@ -105,7 +106,7 @@ def update_selected_business_like_count(business_id):
     business = valid_id(Business, business_id)
     business.like_count += 1
     db.session.commit()
-    return {"like":business.like_count},200
+    return {"like":business.to_dic()},200
     
 
 

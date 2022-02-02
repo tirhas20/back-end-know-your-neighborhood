@@ -106,7 +106,7 @@ def update_selected_business_like_count(business_id):
     business = valid_id(Business, business_id)
     business.like_count += 1
     db.session.commit()
-    return {"like":business.to_dic()},200
+    return jsonify(business.to_dic()),200
     
 
 

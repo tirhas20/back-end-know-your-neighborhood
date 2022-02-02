@@ -98,7 +98,7 @@ def update_selected_business(business_id):
     db.session.commit()
     return jsonify(business.to_dic()),200
 
-@businnes_bp.route("/<business_id>/like_count", methods=["PATCH"])
+@businnes_bp.route("/<business_id>/like", methods=["PATCH"])
 def update_selected_business_like_count(business_id):
     """
     update  businesses like_count  with a given id
@@ -108,6 +108,14 @@ def update_selected_business_like_count(business_id):
     db.session.commit()
     return jsonify(business.to_dic()),200
     
-
+@businnes_bp.route("/<business_id>/dislike", methods=["PATCH"])
+def decrease_selected_business_like_count(business_id):
+    """
+    update  businesses like_count  with a given id
+    """
+    business = valid_id(Business, business_id)
+    business.like_count = 0
+    db.session.commit()
+    return jsonify(business.to_dic()),200
 
     

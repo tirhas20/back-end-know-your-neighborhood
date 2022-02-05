@@ -22,7 +22,7 @@ def create_business():
                             like_count = 0)
     db.session.add(new_business)
     db.session.commit()
-    return {"id":new_business.id}, 201
+    return jsonify(new_business.to_dic()), 200
 
 @businnes_bp.route("", methods=["GET"])
 def get_busineses():

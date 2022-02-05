@@ -95,6 +95,8 @@ def update_selected_business(business_id):
         business.website = request_body["website"]
     if "category" in request_body:
         business.category = request_body["category"]
+    if "like_count" in request_body:
+        business.like_count = business.like_count + 1
     db.session.commit()
     return jsonify(business.to_dic()),200
 

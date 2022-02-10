@@ -2,13 +2,21 @@ from flask import Blueprint, request, jsonify
 from app import db
 from app.models.business import Business
 from .helper_functions import *
+from .auth import requires_auth, AuthError
 
 businnes_bp = Blueprint("businesses", __name__, url_prefix="/businesses")
 
 ####---------------------------------------------------####
 ####----------------- BUSINESS ENDPOINTS -----------------####
 ####---------------------------------------------------####
+@businnes_bp.errorhandler(AuthError)
+def auth_error(error):
+    response = jsonify(error.error)
+    response.status_code = error.status_code
+    return response
+
 @businnes_bp.route("", methods=["POST"])
+@requires_auth('create:business')
 def create_business():
     request_body = request.get_json()
     valid_input(request_body, Business)
@@ -64,7 +72,8 @@ def get_business_for_selected_category_zipcode():
     return jsonify(business_response), 200
 
 @businnes_bp.route("/<business_id>", methods=["DELETE"])
-def delete_selected_business(business_id):
+@requires_auth('delete:business')
+def delete_selected_business(jwt,business_id):
     """
     delete a businesses  with a given id
     """
@@ -74,7 +83,8 @@ def delete_selected_business(business_id):
     return {"id": business.id},200
 
 @businnes_bp.route("/<business_id>", methods=["PATCH"])
-def update_selected_business(business_id):
+@requires_auth('update:business')
+def update_selected_business(jwt,business_id):
     """
     update a businesses  with a given id
     """
@@ -101,7 +111,8 @@ def update_selected_business(business_id):
     return jsonify(business.to_dic()),200
 
 @businnes_bp.route("/<business_id>/like", methods=["PATCH"])
-def update_selected_business_like_count(business_id):
+@requires_auth('update-like:business')
+def update_selected_business_like_count(jwt,business_id):
     """
     update  businesses like_count  with a given id
     """
@@ -111,7 +122,8 @@ def update_selected_business_like_count(business_id):
     return jsonify(business.to_dic()),200
     
 @businnes_bp.route("/<business_id>/dislike", methods=["PATCH"])
-def decrease_selected_business_like_count(business_id):
+@requires_auth('update-dislike:business')
+def decrease_selected_business_like_count(jwt,business_id):
     """
     update  businesses like_count  with a given id
     """

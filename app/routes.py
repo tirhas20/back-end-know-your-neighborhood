@@ -17,7 +17,7 @@ def auth_error(error):
 
 @businnes_bp.route("", methods=["POST"])
 @requires_auth('create:business')
-def create_business():
+def create_business(jwt):
     request_body = request.get_json()
     valid_input(request_body, Business)
     new_business = Business(name = request_body["name"],

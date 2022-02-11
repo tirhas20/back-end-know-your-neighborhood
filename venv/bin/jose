@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/Users/tirhasgebreyohannes/Developer/projects/capstone/BACK-END-KNOW-YOUR-NEIGHBORHOOD/venv/bin/python3
+=======
+#!/Users/tirhasgebreyohannes/ada/capston_practice/BACK-END-KNOW-YOUR-NEIGHBORHOOD/venv/bin/python3
+>>>>>>> 03f5361d41785d315a8ced250f5c59ec13bbbbdc
 # EASY-INSTALL-ENTRY-SCRIPT: 'jose==1.0.0','console_scripts','jose'
 import re
 import sys

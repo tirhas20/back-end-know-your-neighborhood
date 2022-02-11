@@ -111,8 +111,7 @@ def update_selected_business(jwt,business_id):
     return jsonify(business.to_dic()),200
 
 @businnes_bp.route("/<business_id>/like", methods=["PATCH"])
-@requires_auth('update-like:business')
-def update_selected_business_like_count(jwt,business_id):
+def update_selected_business_like_count(business_id):
     """
     update  businesses like_count  with a given id
     """
@@ -122,8 +121,7 @@ def update_selected_business_like_count(jwt,business_id):
     return jsonify(business.to_dic()),200
     
 @businnes_bp.route("/<business_id>/dislike", methods=["PATCH"])
-@requires_auth('update-dislike:business')
-def decrease_selected_business_like_count(jwt,business_id):
+def decrease_selected_business_like_count(business_id):
     """
     update  businesses like_count  with a given id
     """

@@ -25,7 +25,7 @@ def valid_input(request_body, model):
     Returns 400 with needed input if missing."""
     
     if model == Business:
-        required_input = ["name","street","city","state","zipcode","website","category"]
+        required_input = ["name","street","city","state","zipcode","website","category","like_count"]
 
     for input in required_input:
         if input not in request_body:
